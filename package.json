@@ -1,0 +1,37 @@
+{
+  "name": "doctor-qna",
+  "version": "1.0.0",
+  "description": "Backend for doctor qna app for postgres RESTful apis.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Aitsam Ahad",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "and": "^0.0.3",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "express-promise-router": "^4.0.1",
+    "express-validator": "^6.6.1",
+    "formidable": "^1.2.2",
+    "helmet": "^4.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mkdirp": "^1.0.4",
+    "morgan": "^1.10.0",
+    "pg": "^8.3.2",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.4",
+    "shortid": "^2.2.15"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
