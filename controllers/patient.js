@@ -22,7 +22,7 @@ module.exports = {
           ],
         },
       ],
-      attributes: ["title"],
+      attributes: ["id"],
       required: true,
     });
     if (!user)
@@ -38,7 +38,7 @@ module.exports = {
     const reConstructCategories = [];
     req.patient.categories.map(category =>
       reConstructCategories.push({
-        title: category.title,
+        id: category.id,
         count: category.questions.length,
       })
     );
@@ -112,11 +112,69 @@ module.exports = {
           weight,
           height,
         });
-        res.json({ updated });
+        res.json({ updated: true });
       })
       .catch(err => {
         console.log(err);
-        return res.status(400).json({ message: "Not able to update!" });
+        return res
+          .status(400)
+          .json({ updated: false, message: "Not able to update!" });
       });
+  },
+
+  updatePatientFCM: async (req, res) => {
+    const { fcm_token } = req.body;
+
+    const patient = await Models.Patient.findOne({
+      where: { p_id: req.patient.p_id },
+    });
+
+    if (!patient)
+      return res
+        .status(400)
+        .json({ updated: false, message: "Not able to update FCM!" });
+
+    await patient.update({
+      fcm_token: fcm_token,
+    });
+
+    return res.json({
+      updated: true,
+      message: "FCM Updated!",
+    });
+  },
+
+  patientLogin: async (req, res) => {
+    const patient = await Models.Patient.findOne({
+      where: { p_id: req.patient.p_id },
+    });
+
+    if (!patient)
+      return res
+        .status(400)
+        .json({ error: true, message: "Patient not found" });
+
+    await patient.update({
+      isSignedIn: true,
+    });
+
+    res.json({ error: false, message: "Patient Login successful!" });
+  },
+
+  patientLogout: async (req, res) => {
+    const patient = await Models.Patient.findOne({
+      where: { p_id: req.patient.p_id },
+    });
+
+    if (!patient)
+      return res
+        .status(400)
+        .json({ error: true, message: "Patient not found" });
+
+    await patient.update({
+      isSignedIn: false,
+    });
+
+    res.json({ error: false, message: "Patient Log out successfully!" });
   },
 };

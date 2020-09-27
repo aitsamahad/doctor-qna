@@ -46,6 +46,11 @@ module.exports = {
 
     // check if the user exists
     const user = await Doctor.findByPk(req.body.d_id);
+
+    await user.update({
+      isSignedIn: true,
+    });
+
     if (user) {
       // if the user exist then create a token for them
       const token = await jwt.sign(
@@ -94,6 +99,11 @@ module.exports = {
 
     // check if the user exists
     const user = await Patient.findByPk(req.body.p_id);
+
+    await user.update({
+      isSignedIn: true,
+    });
+
     if (user) {
       // if the user exist then create a token for them
       const token = await jwt.sign(

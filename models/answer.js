@@ -14,6 +14,7 @@ const Answer = sequelize.define("answer", {
   question: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue: "none",
   },
   specialization_id: {
     type: Sequelize.INTEGER,

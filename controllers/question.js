@@ -6,6 +6,21 @@ module.exports = {
   getQuestionById: async (req, res, next, id) => {
     const question = await Models.Question.findOne({
       where: { id: id },
+      include: [
+        {
+          model: Models.PATIENT_UPLOAD,
+        },
+        {
+          model: Models.Answer,
+          include: [
+            {
+              model: Models.Doctor,
+              attributes: ["f_name", "l_name"],
+            },
+          ],
+        },
+      ],
+      order: [[{ model: Models.Answer }, "id", "DESC"]],
       // include: ["refDocs"],
     });
 

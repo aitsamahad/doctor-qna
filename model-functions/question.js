@@ -1,7 +1,9 @@
 const Models = require("../models");
 const handlers = require("../handlers/auth.js");
 const { UPLOAD_PATIENT_DOCS } = require("../handlers/upload");
+const { SEND_NOTIFICATION_TO_DOCTOR } = require("../handlers/notification");
 const { isArray } = require("util");
+const { Op } = require("sequelize");
 
 module.exports = {
   postQuestion: async (req, err, fields, uploads) => {
@@ -63,6 +65,19 @@ module.exports = {
         );
       } else if (uploads.type != null) {
         UPLOAD_PATIENT_DOCS(uploads, patient_id, newQuestion.id);
+      }
+
+      // Sending Notifications to specialized doctors.
+      const SendNotification = await SEND_NOTIFICATION_TO_DOCTOR(
+        patient_id,
+        newQuestion.id,
+        specialization_id
+      );
+
+      if (SendNotification) {
+        console.log("Notifications sent!");
+      } else {
+        console.log("Notification FAILED!");
       }
     }
 

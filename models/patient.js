@@ -49,6 +49,10 @@ const Patient = sequelize.define("patient", {
     type: Sequelize.TEXT,
     defaultValue: 0,
   },
+  isSignedIn: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true,
+  },
 });
 
 module.exports = Patient;

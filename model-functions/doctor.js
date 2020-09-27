@@ -26,7 +26,7 @@ module.exports = {
     }
 
     // De-structuring information from the fields
-    const { d_id, email, f_name, l_name, country } = fields;
+    const { d_id, email, f_name, l_name, country, gender } = fields;
     const pmdc_id = fields.pmdc_id || "0";
     const phone = fields.phone || "0";
     const fcm_token = fields.fcm_token || "none";
@@ -57,6 +57,7 @@ module.exports = {
       email,
       f_name,
       l_name,
+      gender,
       country,
       pmdc_id,
       phone,

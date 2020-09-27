@@ -19,6 +19,7 @@ const doctorRoutes = require("./routes/doctor");
 const patientRoutes = require("./routes/patient");
 const specializationRoutes = require("./routes/specialization");
 const questionRoutes = require("./routes/question");
+const answerRoutes = require("./routes/answer");
 
 // Ensure upload directory exists.
 const UPLOAD_DIR = "./uploads";
@@ -42,6 +43,7 @@ app.use("/api/doctor", authGuard, doctorRoutes);
 app.use("/api/patient", authGuard, patientRoutes);
 app.use("/api/specialization", authGuard, specializationRoutes);
 app.use("/api/question", authGuard, questionRoutes);
+app.use("/api/answer", authGuard, answerRoutes);
 // app.use(authGuard);
 
 // Error Handlers
@@ -55,7 +57,6 @@ app.use((err, req, res, next) => {
       message: error.message,
     },
   });
-
   // Respond to terminal
   console.error(err);
 });
@@ -89,6 +90,7 @@ Patient.hasMany(ToBeAnswered, {
 
 // Doctors have many tobeanswered and Answer belongs to Doctor
 Answer.belongsTo(Doctor, { foreignKey: "doctor_id" });
+ToBeAnswered.belongsTo(Doctor, { foreignKey: "doctor_id" });
 Doctor.hasMany(ToBeAnswered, {
   // as: "doctor_notifications_list",
   foreignKey: "doctor_id",
@@ -104,6 +106,8 @@ Question.hasMany(PATIENT_UPLOAD, {
   // as: "refDocs",
   foreignKey: "question_id",
 });
+ToBeAnswered.belongsTo(Question, { foreignKey: "question_id" });
+Question.hasMany(ToBeAnswered, { foreignKey: "question_id" });
 
 // Doctor has many ID's and ID belongs to a doctor
 ID_UPLOAD.belongsTo(Doctor, { foreignKey: "d_id" });
@@ -125,6 +129,14 @@ Specialization.hasMany(Question, {
 });
 ToBeAnswered.belongsTo(Specialization, { foreignKey: "specialization_id" });
 Specialization.hasMany(ToBeAnswered, { foreignKey: "specialization_id" });
+
+// Answer relationship
+Answer.belongsTo(Question, {
+  foreignKey: "question_id",
+  as: "totalAnswers",
+  onDelete: "CASCADE",
+});
+Question.hasMany(Answer, { foreignKey: "question_id" });
 
 (async function () {
   const syncDB = await sequelize.sync();

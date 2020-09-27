@@ -27,6 +27,11 @@ const Doctor = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    gender: {
+      type: Sequelize.ENUM,
+      values: ["Female", "Male", "Other"],
+      allowNull: false,
+    },
     phone: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -38,6 +43,21 @@ const Doctor = sequelize.define(
       defaultValue: "none",
     },
     specializations: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: "none",
+    },
+    office_address: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: "none",
+    },
+    office_timing: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: "none",
+    },
+    about: {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: "none",
@@ -57,6 +77,10 @@ const Doctor = sequelize.define(
     fcm_token: {
       type: Sequelize.TEXT,
       defaultValue: 0,
+    },
+    isSignedIn: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true,
     },
   }
   // {
