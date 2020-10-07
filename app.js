@@ -9,6 +9,14 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const mkdirp = require("mkdirp");
+const FCM = require("firebase-admin");
+const ServiceAccount = require("./fcm/ServiceAccountKey.json");
+
+// Initializing Firebase FCM
+FCM.initializeApp({
+  credential: FCM.credential.cert(ServiceAccount),
+  databaseURL: process.env.APP_URL,
+});
 
 // API Authorization Middlewares
 const { authGuard } = require("./apiAuth/authGuard");

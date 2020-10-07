@@ -60,7 +60,7 @@ module.exports = {
 
       // Checking if there are images in the fields and uploading them
       if (isArray(uploads)) {
-        uploads.map(file =>
+        uploads.map((file) =>
           UPLOAD_PATIENT_DOCS(file, patient_id, newQuestion.id)
         );
       } else if (uploads.type != null) {

@@ -3,3 +3,5 @@ uploads
 Dockerfile
 .dockerignore
 .env
+.env.local
+fcm
