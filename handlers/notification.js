@@ -47,7 +47,7 @@ module.exports = {
               data: {
                 title: "Doctor's Q&A",
                 body: "Patient needs you!",
-                type: "answerList",
+                type: "QuestionNotifications",
               },
               android: {
                 notification: {
@@ -75,7 +75,7 @@ module.exports = {
                 const failedTokens = [];
                 response.responses.forEach((resp, idx) => {
                   if (!resp.success) {
-                    failedTokens.push(registrationTokens[idx]);
+                    failedTokens.push(DoctorsFCMTokens[idx]);
                   }
                 });
                 console.log(
