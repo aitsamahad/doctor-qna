@@ -4,6 +4,8 @@ const {
   getDoctorById,
   getDoctor,
   getDoctorSpecializationNotifications,
+  getDoctorSpecificSpecializationAnsweredQuestions,
+  getDoctorAnsweredQuestionsForAllSpecializations,
   getDoctorSpecificSpecializationQuestions,
   updateDoctor,
   postAnswer,
@@ -33,6 +35,16 @@ router.route("/:doctorId/doctor-logout").post(doctorLogout);
 router
   .route("/:doctorId/notifications")
   .get(getDoctorSpecializationNotifications);
+
+// @GET Doctor's All answer by ID
+router
+  .route("/:doctorId/answers")
+  .get(getDoctorAnsweredQuestionsForAllSpecializations);
+
+// @GET Doctor's All answer by ID
+router
+  .route("/:doctorId/:specializationId/answers")
+  .get(getDoctorSpecificSpecializationAnsweredQuestions);
 
 // @GET Doctor's Questions By specializationId
 router
