@@ -63,7 +63,7 @@ module.exports = {
         uploads.map((file) =>
           UPLOAD_PATIENT_DOCS(file, patient_id, newQuestion.id)
         );
-      } else if (uploads.type != null) {
+      } else if (uploads) {
         UPLOAD_PATIENT_DOCS(uploads, patient_id, newQuestion.id);
       }
 
