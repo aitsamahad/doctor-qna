@@ -6,14 +6,14 @@ const sequelize = new Sequelize(
   process.env.DB_USER,
   process.env.DB_PASSWORD,
   {
-    dialect: "postgres",
+    dialect: "mysql",
     host: "localhost",
     pool: {
       max: 9,
       min: 0,
       idle: 10000,
     },
-    port: 5432,
+    port: 8889,
   }
 );
 
