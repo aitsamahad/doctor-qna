@@ -47,8 +47,15 @@ module.exports = {
     // check if the user exists
     const user = await Doctor.findByPk(req.body.d_id);
 
+    // Set User signedIn false if he is signed in as Patient already
+    const patient = await Models.Patient.findByPk(req.body.d_id);
+
+    await patient.update({
+      isSignedIn: 0,
+    });
+
     await user.update({
-      isSignedIn: true,
+      isSignedIn: 1,
     });
 
     if (user) {
@@ -97,11 +104,18 @@ module.exports = {
   Patient_Login: async (req, res) => {
     const Patient = Models.Patient;
 
+    // Set User signedIn false if he is signed in as Doctor already
+    const doctor = await Models.Doctor.findByPk(req.body.p_id);
+
+    await doctor.update({
+      isSignedIn: 0,
+    });
+
     // check if the user exists
     const user = await Patient.findByPk(req.body.p_id);
 
     await user.update({
-      isSignedIn: true,
+      isSignedIn: 1,
     });
 
     if (user) {

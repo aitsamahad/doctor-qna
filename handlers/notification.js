@@ -18,6 +18,7 @@ module.exports = {
           specializations: {
             [Op.like]: "%" + GetSpecializationName.title + "%",
           },
+          isSignedIn: 1,
         },
       });
       if (GetAllSpecializedDoctors.length > 0) {

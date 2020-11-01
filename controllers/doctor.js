@@ -269,7 +269,7 @@ module.exports = {
       return res.status(400).json({ error: true, message: "Doctor not found" });
 
     await doctor.update({
-      isSignedIn: true,
+      isSignedIn: 1,
     });
 
     res.json({ error: false, message: "Doctor Login successful!" });
@@ -284,7 +284,7 @@ module.exports = {
       return res.status(400).json({ error: true, message: "Doctor not found" });
 
     await doctor.update({
-      isSignedIn: false,
+      isSignedIn: 0,
     });
 
     res.json({ error: false, message: "Doctor Log out successfully!" });
