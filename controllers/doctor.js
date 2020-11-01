@@ -42,12 +42,14 @@ module.exports = {
               isActive: true,
             },
           ],
-        },
-        {
-          model: Models.Question,
           include: [
             {
-              model: Models.PATIENT_UPLOAD,
+              model: Models.Question,
+              include: [
+                {
+                  model: Models.PATIENT_UPLOAD,
+                },
+              ],
             },
           ],
         },
@@ -60,6 +62,79 @@ module.exports = {
         .json({ error: "No Questions in this Specialization." });
 
     return res.status(200).json({ specializationQuestions });
+  },
+
+  getDoctorSpecificSpecializationAnsweredQuestions: async (req, res) => {
+    const { specializationId } = req.params;
+    const specializationQuestions = await Models.Specialization.findOne({
+      where: {
+        id: specializationId,
+      },
+      include: [
+        {
+          model: Models.Question,
+          include: [
+            {
+              model: Models.PATIENT_UPLOAD,
+            },
+            {
+              model: Models.Answer,
+            },
+            {
+              model: Models.ToBeAnswered,
+              where: [
+                {
+                  doctor_id: req.doctor.d_id,
+                  isActive: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!specializationQuestions)
+      return res
+        .status(400)
+        .json({ error: "No Answer in this Specialization." });
+
+    return res.status(200).json({ specializationQuestions });
+  },
+
+  getDoctorAnsweredQuestionsForAllSpecializations: async (req, res) => {
+    const notifications = await Models.Specialization.findAll({
+      include: [
+        {
+          model: Models.ToBeAnswered,
+          attributes: ["id", "patient_id"],
+          where: [
+            {
+              doctor_id: req.doctor.d_id,
+              isActive: false,
+            },
+          ],
+        },
+      ],
+      attributes: ["id", "title"],
+      required: true,
+    });
+
+    if (!notifications)
+      return res.status(400).json({ error: "No Question answered by Doctor!" });
+
+    const reConstructNotifications = [];
+
+    notifications.map((notification) =>
+      reConstructNotifications.push({
+        id: notification.id,
+        title: notification.title,
+        Answered: notification.tobeanswereds,
+        count: notification.tobeanswereds.length,
+      })
+    );
+
+    return res.json(reConstructNotifications);
   },
 
   getDoctorSpecializationNotifications: async (req, res) => {
@@ -85,7 +160,7 @@ module.exports = {
 
     const reConstructNotifications = [];
 
-    notifications.map(notification =>
+    notifications.map((notification) =>
       reConstructNotifications.push({
         id: notification.id,
         title: notification.title,
@@ -146,7 +221,7 @@ module.exports = {
     await Models.Doctor.findOne({
       where: { d_id: req.doctor.d_id },
     })
-      .then(async result => {
+      .then(async (result) => {
         const updated = await result.update({
           office_timing,
           office_address,
@@ -155,7 +230,7 @@ module.exports = {
         });
         res.json({ updated: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         return res
           .status(400)
