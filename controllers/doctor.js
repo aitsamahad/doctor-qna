@@ -35,19 +35,20 @@ module.exports = {
       },
       include: [
         {
-          model: Models.ToBeAnswered,
-          where: [
-            {
-              doctor_id: req.doctor.d_id,
-              isActive: true,
-            },
-          ],
+          model: Models.Question,
           include: [
             {
-              model: Models.Question,
-              include: [
+              model: Models.PATIENT_UPLOAD,
+            },
+            {
+              model: Models.Answer,
+            },
+            {
+              model: Models.ToBeAnswered,
+              where: [
                 {
-                  model: Models.PATIENT_UPLOAD,
+                  doctor_id: req.doctor.d_id,
+                  isActive: true,
                 },
               ],
             },
