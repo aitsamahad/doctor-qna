@@ -6,6 +6,8 @@ const Specialization = require("./specialization");
 const ToBeAnswered = require("./tobeanswered");
 const ID_UPLOAD = require("./id_upload");
 const PATIENT_UPLOAD = require("./patient_upload");
+const DOCTOR_PROFILE = require("./doctor_profile");
+const PATIENT_PROFILE = require("./patient_profile");
 module.exports = {
   Doctor,
   Patient,
@@ -15,4 +17,6 @@ module.exports = {
   PATIENT_UPLOAD,
   Answer,
   ToBeAnswered,
+  DOCTOR_PROFILE,
+  PATIENT_PROFILE,
 };

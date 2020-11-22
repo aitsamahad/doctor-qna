@@ -8,6 +8,7 @@ const {
   updatePatientFCM,
   patientLogin,
   patientLogout,
+  addPatientProfileImage,
 } = require("../controllers/patient");
 
 router.param("patientId", getPatientById);
@@ -20,6 +21,9 @@ router.route("/:patientId/update-fcm").put(updatePatientFCM);
 
 // @POST Patient Login
 router.route("/:patientId/patient-login").post(patientLogin);
+
+// @POST Patient Profile pic upload
+router.route("/upload/profile").post(addPatientProfileImage);
 
 // @POST Patient Logout
 router.route("/:patientId/patient-logout").post(patientLogout);

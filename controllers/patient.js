@@ -1,5 +1,6 @@
 const Models = require("../models");
 const sequelize = require("../db_config/sequelize");
+const { UPLOAD_PATIENT_PROFILE_PIC } = require("../handlers/upload");
 
 module.exports = {
   getPatientById: async (req, res, next, id) => {
@@ -7,6 +8,16 @@ module.exports = {
     const user = await Models.Patient.findOne({
       // attributes: ["*", sequelize.fn("COUNT", sequelize.col("Questions.id"))],
       where: { p_id: id },
+      include: [
+        {
+          model: Models.PATIENT_PROFILE,
+          where: [
+            {
+              p_id: id,
+            },
+          ],
+        },
+      ],
     });
 
     const categories = await Models.Specialization.findAll({
@@ -36,7 +47,7 @@ module.exports = {
 
   getPatient: async (req, res) => {
     const reConstructCategories = [];
-    req.patient.categories.map(category =>
+    req.patient.categories.map((category) =>
       reConstructCategories.push({
         id: category.id,
         count: category.questions.length,
@@ -104,7 +115,7 @@ module.exports = {
         "updatedAt",
       ],
     })
-      .then(async result => {
+      .then(async (result) => {
         const updated = await result.update({
           f_name,
           l_name,
@@ -114,7 +125,7 @@ module.exports = {
         });
         res.json({ updated: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         return res
           .status(400)
@@ -176,5 +187,31 @@ module.exports = {
     });
 
     res.json({ error: false, message: "Patient Log out successfully!" });
+  },
+  addPatientProfileImage: async (req, res) => {
+    let form = new formidable.IncomingForm({ multiples: true });
+    form.keepExtensions = true;
+
+    await form.parse(req, (err, fields, { uploads }) => {
+      (async function () {
+        // Checking if there are images in the fields and uploading them
+        if (isArray(uploads)) {
+          uploads.map((file) => UPLOAD_PATIENT_PROFILE_PIC(file, fields.p_id));
+        } else if (uploads) {
+          UPLOAD_PATIENT_PROFILE_PIC(uploads, fields.p_id);
+        }
+
+        if (err)
+          return res.status(400).json({
+            error: true,
+            message: "Masla yeh hai!, " + err,
+          });
+
+        return res.status(201).json({
+          error: false,
+          message: "Profile picture uploaded successfully!",
+        });
+      })();
+    });
   },
 };

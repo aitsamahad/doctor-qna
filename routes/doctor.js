@@ -12,6 +12,7 @@ const {
   updateDoctorFCM,
   doctorLogin,
   doctorLogout,
+  addDoctorProfileImage,
 } = require("../controllers/doctor");
 
 router.param("doctorId", getDoctorById);
@@ -40,6 +41,9 @@ router
 router
   .route("/:doctorId/answers")
   .get(getDoctorAnsweredQuestionsForAllSpecializations);
+
+// @POST Doctor Profile pic upload
+router.route("/upload/profile").post(addDoctorProfileImage);
 
 // @GET Doctor's All answer by ID
 router

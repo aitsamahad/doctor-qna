@@ -1,9 +1,20 @@
+const { UPLOAD_DOCTOR_PROFILE_PIC } = require("../handlers/upload");
 const Models = require("../models");
 
 module.exports = {
   getDoctorById: async (req, res, next, id) => {
     const doctor = await Models.Doctor.findOne({
       where: { d_id: id },
+      include: [
+        {
+          model: Models.DOCTOR_PROFILE,
+          where: [
+            {
+              d_id: id,
+            },
+          ],
+        },
+      ],
     });
 
     const notifications = await Models.ToBeAnswered.findAndCountAll({
@@ -289,5 +300,32 @@ module.exports = {
     });
 
     res.json({ error: false, message: "Doctor Log out successfully!" });
+  },
+
+  addDoctorProfileImage: async (req, res) => {
+    let form = new formidable.IncomingForm({ multiples: true });
+    form.keepExtensions = true;
+
+    await form.parse(req, (err, fields, { uploads }) => {
+      (async function () {
+        // Checking if there are images in the fields and uploading them
+        if (isArray(uploads)) {
+          uploads.map((file) => UPLOAD_DOCTOR_PROFILE_PIC(file, fields.d_id));
+        } else if (uploads) {
+          UPLOAD_DOCTOR_PROFILE_PIC(uploads, fields.d_id);
+        }
+
+        if (err)
+          return res.status(400).json({
+            error: true,
+            message: "Masla yeh hai!, " + err,
+          });
+
+        return res.status(201).json({
+          error: false,
+          message: "Profile picture uploaded successfully!",
+        });
+      })();
+    });
   },
 };

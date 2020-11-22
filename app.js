@@ -75,6 +75,8 @@ const port = process.env.PORT || 4000;
 const Question = require("./models/question");
 const Patient = require("./models/patient");
 const PATIENT_UPLOAD = require("./models/patient_upload");
+const PATIENT_PROFILE = require("./models/patient_profile");
+const DOCTOR_PROFILE = require("./models/doctor_profile");
 const Doctor = require("./models/doctor");
 const ID_UPLOAD = require("./models/id_upload");
 const ToBeAnswered = require("./models/tobeanswered");
@@ -122,6 +124,16 @@ ID_UPLOAD.belongsTo(Doctor, { foreignKey: "d_id" });
 Doctor.hasMany(ID_UPLOAD, {
   // as: "ids",
   foreignKey: "d_id",
+});
+DOCTOR_PROFILE.belongsTo(Doctor, { foreignKey: "d_id" });
+Doctor.hasMany(DOCTOR_PROFILE, {
+  foreignKey: "d_id",
+});
+
+//Patients Documents Relations
+PATIENT_PROFILE.belongsTo(Patient, { foreignKey: "p_id" });
+Patient.hasMany(PATIENT_PROFILE, {
+  foreignKey: "p_id",
 });
 
 // Specialization Relations
