@@ -1,5 +1,6 @@
 const { UPLOAD_DOCTOR_PROFILE_PIC } = require("../handlers/upload");
 const Models = require("../models");
+const formidable = require("formidable");
 
 module.exports = {
   getDoctorById: async (req, res, next, id) => {

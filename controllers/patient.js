@@ -1,6 +1,7 @@
 const Models = require("../models");
 const sequelize = require("../db_config/sequelize");
 const { UPLOAD_PATIENT_PROFILE_PIC } = require("../handlers/upload");
+const formidable = require("formidable");
 
 module.exports = {
   getPatientById: async (req, res, next, id) => {
