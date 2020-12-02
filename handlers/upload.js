@@ -72,7 +72,7 @@ module.exports = {
     let id = shortid.generate();
     let oldPath = file.path;
     let newPath = `${UPLOAD_DIR}/${id}-${file.name}`;
-    let uploadPath = `/uploads/patients/${d_id}/profile/${id}-${file.name}`;
+    let uploadPath = `/uploads/patients/${p_id}/profile/${id}-${file.name}`;
     let rawData = fs.readFileSync(oldPath);
 
     fs.writeFile(newPath, rawData, function (err) {
