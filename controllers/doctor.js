@@ -10,11 +10,6 @@ module.exports = {
       include: [
         {
           model: Models.DOCTOR_PROFILE,
-          where: [
-            {
-              d_id: id,
-            },
-          ],
         },
       ],
     });

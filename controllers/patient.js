@@ -13,11 +13,6 @@ module.exports = {
       include: [
         {
           model: Models.PATIENT_PROFILE,
-          where: [
-            {
-              p_id: id,
-            },
-          ],
         },
       ],
     });
