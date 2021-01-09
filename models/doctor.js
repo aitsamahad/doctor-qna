@@ -82,6 +82,10 @@ const Doctor = sequelize.define(
       type: Sequelize.BOOLEAN,
       defaultValue: true,
     },
+    approved: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   }
   // {
   //   tableName: "questions",
