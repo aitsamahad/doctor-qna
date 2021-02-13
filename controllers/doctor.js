@@ -28,6 +28,25 @@ module.exports = {
     next();
   },
 
+  getAllDoctors: async (req, res) => {
+    const doctors = await Models.Doctor.findAll();
+    if (doctors.length) {
+      return res.status(200).json(doctors);
+    }
+  },
+
+  toggleDoctorApproval: async (req, res) => {
+    const doctor = await Models.Doctor.findOne({
+      where: { d_id: req.doctor.d_id },
+    });
+
+    if (doctor) {
+      doctor.update({ approved: !req.doctor.approved });
+      return res.status(200).json({ error: false, message: "Doctor Toggled" });
+    }
+    return res.status(400).json({ error: true, message: "Some went wrong!" });
+  },
+
   getDoctor: async (req, res) => {
     return res.json({
       doctor: req.doctor,

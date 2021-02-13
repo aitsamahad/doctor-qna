@@ -3,6 +3,7 @@ const {
   clearDoctors,
   getDoctorById,
   getDoctor,
+  getAllDoctors,
   getDoctorSpecializationNotifications,
   getDoctorSpecificSpecializationAnsweredQuestions,
   getDoctorAnsweredQuestionsForAllSpecializations,
@@ -13,6 +14,7 @@ const {
   doctorLogin,
   doctorLogout,
   addDoctorProfileImage,
+  toggleDoctorApproval,
 } = require("../controllers/doctor");
 
 router.param("doctorId", getDoctorById);
@@ -20,8 +22,14 @@ router.param("doctorId", getDoctorById);
 // @GET/@PUT Doctor By Id
 router.route("/:doctorId").get(getDoctor).put(updateDoctor);
 
+// @GET * Doctors
+router.route("/get/doctors").get(getAllDoctors);
+
 // @POST Doctor Post answer
 router.route("/:doctorId/post-answer").post(postAnswer);
+
+// @POST Doctor Post answer
+router.route("/:doctorId/toggle-doctor").post(toggleDoctorApproval);
 
 // @PUT Doctor Update FCM
 router.route("/:doctorId/update-fcm").put(updateDoctorFCM);
