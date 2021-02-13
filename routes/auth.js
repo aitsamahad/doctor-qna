@@ -3,6 +3,9 @@ const { check } = require("express-validator");
 const AuthController = require("../controllers/auth");
 const Auth = require("../handlers/auth");
 
+// @POST ADMIN LOGIN
+router.route("/admin/login").post(AuthController.AdminLogin);
+
 // ***************** DOCTOR SECTION ********************
 
 // @POST Doctor SignUp
