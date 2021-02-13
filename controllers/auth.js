@@ -68,7 +68,7 @@ module.exports = {
         // this token will last for a year, but you can change it
         { expiresIn: "1y" }
       );
-      res.json({ token });
+      res.json({ approved: user.approved, token });
     } else {
       res.status(404).json({ error: "No user found " });
     }
