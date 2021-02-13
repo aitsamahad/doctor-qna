@@ -55,6 +55,17 @@ module.exports = {
       categories: reConstructCategories,
     });
   },
+  reportDoctor: async (req, res) => {
+    const { patient_id, doctor_id, question_id, answer_id } = req.body;
+    const report = await Models.DOCTOR_REPORT.create({
+      patient_id,
+      doctor_id,
+      question_id,
+      answer_id,
+    });
+    if (report) return res.json({ error: false, message: "Doctor reported!" });
+    return res.json({ error: true, message: "Not Reported, check logs!" });
+  },
 
   clearPatients: async (req, res) => {
     await Models.Patient.destroy({
