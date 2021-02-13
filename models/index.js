@@ -10,6 +10,8 @@ const DOCTOR_PROFILE = require("./doctor_profile");
 const PATIENT_PROFILE = require("./patient_profile");
 const PATIENT_REPORT = require("./patient_report");
 const DOCTOR_REPORT = require("./doctor_report");
+const Admin = require("./admin");
+
 module.exports = {
   Doctor,
   Patient,
@@ -23,4 +25,5 @@ module.exports = {
   PATIENT_PROFILE,
   PATIENT_REPORT,
   DOCTOR_REPORT,
+  Admin,
 };
