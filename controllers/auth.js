@@ -9,6 +9,37 @@ const { patientSignup } = require("../model-functions/patient");
 const SECRET = process.env.SECRET;
 
 module.exports = {
+  AdminLogin: async (req, res) => {
+    const Admin = Models.Admin;
+    const user = await Admin.findAll({
+      where: {
+        username: req.body.username,
+        password: req.body.password,
+      },
+    });
+
+    if (user.length) {
+      // if the user exist then create a token for them
+      const token = await jwt.sign(
+        {
+          user: user,
+        },
+        SECRET,
+        // this token will last for a year, but you can change it
+        { expiresIn: "1y" }
+      );
+      return res.json({
+        error: false,
+        user: user[0],
+        token,
+      });
+    }
+    return res.json({
+      error: true,
+      message: "Username/Password invalid!",
+    });
+  },
+
   // Doctor Registration
   Doctor_Signup: async (req, res) => {
     let form = new formidable.IncomingForm({ multiples: true });
