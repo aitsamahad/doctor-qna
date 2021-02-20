@@ -15,6 +15,8 @@ const {
   doctorLogout,
   addDoctorProfileImage,
   toggleDoctorApproval,
+  getAllSpecializationNotification,
+  getAllQuestionsFromSpecialization,
 } = require("../controllers/doctor");
 
 router.param("doctorId", getDoctorById);
@@ -45,6 +47,11 @@ router
   .route("/:doctorId/notifications")
   .get(getDoctorSpecializationNotifications);
 
+// @GET All Notifications
+router
+  .route("/:doctorId/notifications/all")
+  .get(getAllSpecializationNotification);
+
 // @GET Doctor's All answer by ID
 router
   .route("/:doctorId/answers")
@@ -62,6 +69,11 @@ router
 router
   .route("/:doctorId/specialization/:specializationId")
   .get(getDoctorSpecificSpecializationQuestions);
+
+// @GET Doctor's Questions By specializationId All
+router
+  .route("/:doctorId/specialization/:specializationId/all")
+  .get(getAllQuestionsFromSpecialization);
 
 // @POST Doctor Table Clear
 router.route("/clear").post(clearDoctors);

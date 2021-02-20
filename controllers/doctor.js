@@ -2,6 +2,7 @@ const { UPLOAD_DOCTOR_PROFILE_PIC } = require("../handlers/upload");
 const Models = require("../models");
 const formidable = require("formidable");
 const { isArray } = require("util");
+const { Op } = require("sequelize");
 
 module.exports = {
   getDoctorById: async (req, res, next, id) => {
@@ -78,6 +79,45 @@ module.exports = {
                   isActive: true,
                 },
               ],
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!specializationQuestions)
+      return res
+        .status(400)
+        .json({ error: "No Questions in this Specialization." });
+
+    return res.status(200).json({ specializationQuestions });
+  },
+
+  getAllQuestionsFromSpecialization: async (req, res) => {
+    const { specializationId } = req.params;
+    const specializationQuestions = await Models.Specialization.findOne({
+      where: {
+        id: specializationId,
+      },
+      include: [
+        {
+          model: Models.Question,
+          where: [
+            {
+              answered: {
+                [Op.lte]: 4,
+              },
+            },
+          ],
+          include: [
+            {
+              model: Models.PATIENT_UPLOAD,
+            },
+            {
+              model: Models.Answer,
+            },
+            {
+              model: Models.ToBeAnswered,
             },
           ],
         },
@@ -175,6 +215,45 @@ module.exports = {
             {
               doctor_id: req.doctor.d_id,
               isActive: true,
+            },
+          ],
+        },
+      ],
+      attributes: ["id", "title"],
+      required: true,
+    });
+
+    if (!notifications)
+      return res.status(400).json({ error: "No New Notifications!" });
+
+    const reConstructNotifications = [];
+
+    notifications.map((notification) =>
+      reConstructNotifications.push({
+        id: notification.id,
+        title: notification.title,
+        notification: notification.tobeanswereds,
+        count: notification.tobeanswereds.length,
+      })
+    );
+
+    return res.json(reConstructNotifications);
+  },
+
+  getAllSpecializationNotification: async (req, res) => {
+    const notifications = await Models.Specialization.findAll({
+      include: [
+        {
+          model: Models.ToBeAnswered,
+          attributes: ["id", "patient_id"],
+        },
+        {
+          model: Models.Question,
+          where: [
+            {
+              answered: {
+                [Op.lte]: 4,
+              },
             },
           ],
         },
