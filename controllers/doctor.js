@@ -228,16 +228,59 @@ module.exports = {
 
     const reConstructNotifications = [];
 
-    notifications.map((notification) =>
-      reConstructNotifications.push({
-        id: notification.id,
-        title: notification.title,
-        notification: notification.tobeanswereds,
-        count: notification.tobeanswereds.length,
-      })
-    );
+    if (notifications.length) {
+      notifications.map((notification) =>
+        reConstructNotifications.push({
+          id: notification.id,
+          title: notification.title,
+          notification: notification.tobeanswereds,
+          count: notification.tobeanswereds.length,
+        })
+      );
+      let spec = req.doctor.specializations.split(",");
+      let customObj = [];
+      for (const s of spec) {
+        customObj.push({ title: { [Op.like]: "%" + s + "%" } });
+      }
+      const notify = await Models.Specialization.findAll({
+        where: { [Op.or]: [...customObj] },
+      });
 
-    return res.json(reConstructNotifications);
+      if (notify.length) {
+        notify.map((not) => {
+          let found = reConstructNotifications.some(
+            (el) => el.title === not.title
+          );
+          if (!found) {
+            reConstructNotifications.push({
+              id: not.id,
+              title: not.title,
+              notification: [],
+              count: 0,
+            });
+          }
+        });
+        return res.json(reConstructNotifications);
+      }
+    } else {
+      let spec = req.doctor.specializations.split(",");
+      let customObj = [];
+      for (const s of spec) {
+        customObj.push({ title: { [Op.like]: "%" + s + "%" } });
+      }
+      const notify = await Models.Specialization.findAll({
+        where: { [Op.or]: [...customObj] },
+      });
+
+      let customResponse = [];
+
+      if (notify.length) {
+        notify.map((not) =>
+          customResponse.push({ id: not.id, title: not.title, count: 0 })
+        );
+        return res.json(customResponse);
+      }
+    }
   },
 
   getAllSpecializationNotification: async (req, res) => {
