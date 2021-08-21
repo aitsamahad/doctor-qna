@@ -295,7 +295,7 @@ module.exports = {
           where: [
             {
               answered: {
-                [Op.lte]: 4,
+                [Op.lte]: 1,
               },
             },
           ],
