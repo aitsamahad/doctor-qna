@@ -355,6 +355,12 @@ module.exports = {
       await UpdateToBeAnswered.update({
         isActive: false,
       });
+      
+      await UpdateToBeAnswered.destroy({
+        where: {
+          doctor_id: {[Op.ne]: req.doctor.d_id}
+        }
+      })
     }
 
 
