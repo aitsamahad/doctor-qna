@@ -32,23 +32,24 @@ module.exports = {
       answer,
     });
 
-    const UpdateToBeAnswered = await Models.ToBeAnswered.findOne({
-      where: {
-        doctor_id: doctor_id,
-        question_id: question_id,
-      },
-    });
-    console.log(UpdateToBeAnswered);
-
     if (!PostAnswer)
       return res
         .status(400)
         .json({ error: true, message: "Not able to post the answer!" });
 
+    const UpdateToBeAnswered = await Models.ToBeAnswered.findOne({
+      where: {
+        question_id: question_id,
+      },
+    });
+
+    if (UpdateToBeAnswered) {
+      await UpdateToBeAnswered.update({isActive: 0})
+    }
+
     return res.json({
       error: false,
       message: "Answer Posted!",
-      hello: UpdateToBeAnswered,
     });
   },
 };
