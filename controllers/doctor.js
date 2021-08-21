@@ -289,13 +289,17 @@ module.exports = {
         {
           model: Models.ToBeAnswered,
           attributes: ["id", "patient_id"],
+          where: {
+            doctor_id: req.doctor.d_id,
+            isActive: 1
+          },
         },
         {
           model: Models.Question,
           where: [
             {
               answered: {
-                [Op.lte]: 1,
+                [Op.lte]: 4,
               },
             },
           ],
@@ -336,21 +340,23 @@ module.exports = {
       answer,
     });
 
-    const UpdateToBeAnswered = await Models.ToBeAnswered.findOne({
+    if (!PostAnswer)
+    return res
+      .status(400)
+      .json({ error: true, message: "Not able to post the answer!" });
+
+    const UpdateToBeAnswered = await Models.ToBeAnswered.find({
       where: {
-        doctor_id: req.doctor.d_id,
         question_id: question_id,
       },
     });
 
-    await UpdateToBeAnswered.update({
-      isActive: false,
-    });
+    if (UpdateToBeAnswered) {
+      await UpdateToBeAnswered.update({
+        isActive: false,
+      });
+    }
 
-    if (!PostAnswer)
-      return res
-        .status(400)
-        .json({ error: true, message: "Not able to post the answer!" });
 
     return res.json({ error: false, message: "Answer Posted!" });
   },
