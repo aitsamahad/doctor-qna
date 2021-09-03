@@ -46,9 +46,10 @@ module.exports = {
     if (UpdateToBeAnswered) {
       await UpdateToBeAnswered.update({isActive: 0})
       
-      await UpdateToBeAnswered.destroy({
+      await Models.ToBeAnswered.destroy({
         where: {
-          doctor_id: {[Op.ne]: doctor_id}
+          question_id: question_id
+          doctor_id: {[Op.ne]: doctor_id},
         }
       })
     }

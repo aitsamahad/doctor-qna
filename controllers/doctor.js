@@ -356,8 +356,9 @@ module.exports = {
         isActive: false,
       });
       
-      await UpdateToBeAnswered.destroy({
+      await Models.ToBeAnswered.destroy({
         where: {
+          question_id: question_id
           doctor_id: {[Op.ne]: req.doctor.d_id}
         }
       })
