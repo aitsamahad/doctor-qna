@@ -45,6 +45,12 @@ module.exports = {
 
     if (UpdateToBeAnswered) {
       await UpdateToBeAnswered.update({isActive: 0})
+      
+      await UpdateToBeAnswered.destroy({
+        where: {
+          doctor_id: {[Op.ne]: doctor_id}
+        }
+      })
     }
 
     return res.json({
