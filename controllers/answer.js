@@ -38,9 +38,10 @@ module.exports = {
         .status(400)
         .json({ error: true, message: "Not able to post the answer!" });
 
-    const UpdateToBeAnswered = await Models.ToBeAnswered.find({
+    const UpdateToBeAnswered = await Models.ToBeAnswered.findOne({
       where: {
         question_id: question_id,
+        doctor_id: doctor_id
       },
     });
 
