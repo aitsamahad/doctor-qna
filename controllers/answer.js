@@ -1,4 +1,5 @@
 const Models = require("../models");
+const { Op } = require("sequelize");
 
 module.exports = {
   getAnswerById: async (req, res) => {
