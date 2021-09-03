@@ -50,7 +50,7 @@ module.exports = {
       
       await Models.ToBeAnswered.destroy({
         where: {
-          question_id: question_id
+          question_id: question_id,
           doctor_id: {[Op.ne]: doctor_id},
         }
       })
