@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+const Sequelize = require("sequelize")
 
 //creating an instance            // Database, User, Pass
 const sequelize = new Sequelize(
@@ -6,15 +6,15 @@ const sequelize = new Sequelize(
   process.env.DB_USER,
   process.env.DB_PASSWORD,
   {
-    dialect: "mysql",
-    host: "localhost",
+    dialect: "postgres",
+    host: `${process.env.DB_HOST}`,
     pool: {
       max: 9,
       min: 0,
       idle: 10000,
     },
-    port: 8889,
+    port: `${process.env.DB_PORT}`,
   }
-);
+)
 
-module.exports = sequelize;
+module.exports = sequelize
